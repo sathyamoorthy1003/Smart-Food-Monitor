@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Food Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Smart Food Monitor</h1>
+            <div id="connection-status" class="status-badge connected">System Active</div>
+        </header>
+
+        <main>
+            <!-- Live Sensor Data Section -->
+            <section class="sensor-dashboard">
+                <div class="card sensor-card">
+                    <h3>Temperature</h3>
+                    <div class="value" id="temp-val">-- °C</div>
+                </div>
+                <div class="card sensor-card">
+                    <h3>Humidity</h3>
+                    <div class="value" id="hum-val">-- %</div>
+                </div>
+                <div class="card sensor-card">
+                    <h3>Gas Level</h3>
+                    <div class="value" id="gas-val">--</div>
+                </div>
+                <div class="card sensor-card">
+                    <h3>Environment Status</h3>
+                    <div class="value status-good" id="env-status">--</div>
+                </div>
+            </section>
+
+            <!-- Inventory Slots Section -->
+            <section class="slots-section">
+                <h2>Inventory Slots</h2>
+                <div class="slots-grid" id="slots-container">
+                    <!-- Slots will be injected here by JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Hidden file input for uploads -->
+    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+
+    <script src="app.js"></script>
+</body>
+</html>
