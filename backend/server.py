@@ -33,22 +33,35 @@ def read_from_serial():
     try:
         ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
         print(f"Connected to {SERIAL_PORT}")
-    except Exception as e:
-        print(f"Serial Error: {e}. Running in Mock Mode.")
-    
-    while True:
-        if ser and ser.is_open:
+        
+        while True:
             try:
                 if ser.in_waiting > 0:
                     line = ser.readline().decode('utf-8').strip()
                     if line.startswith("{") and line.endswith("}"):
                         data = json.loads(line)
                         latest_sensor_data = data
-                        # Log to DB occasionally (e.g., every 10th reading or time-based) could be added here
-                        # For now, we rely on the client or polling logic to save
             except Exception as e:
                 print(f"Serial Read Error: {e}")
-        time.sleep(1)
+            time.sleep(0.1)
+            
+    except Exception as e:
+        print(f"Serial Error: {e}. Running in Mock Mode.")
+        while True:
+            import random
+            # Simulate changing values
+            gas = random.randint(300, 400)
+            temp = round(random.uniform(25.0, 32.0), 1)
+            hum = round(random.uniform(60.0, 80.0), 1)
+            status = "SPOILED" if (gas > 350 or temp > 30) else "FRESH"
+            
+            latest_sensor_data = {
+                "gas": gas,
+                "temp": temp,
+                "hum": hum,
+                "status": status
+            }
+            time.sleep(2)
 
 # Start Serial Thread
 threading.Thread(target=read_from_serial, daemon=True).start()
@@ -87,4 +100,4 @@ def upload_image(slot_id):
 
 if __name__ == '__main__':
     database.init_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
